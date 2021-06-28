@@ -56,6 +56,7 @@ jobs:
         run: |
           pip install git+https://github.com/frerich/clcache.git
           cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -- -j2
+          clcache -s
         env:
           CC: clcache
           CXX: clcache
