@@ -1,5 +1,6 @@
 name: Linux Clang
 on:
+  workflow_dispatch:
   push:
     branches: [ main, development ]
   pull_request:
@@ -32,7 +33,7 @@ jobs:
         with:
           path: ~/usr/lib/
           key: ${{matrix.os}}-${{ matrix.clang-version }}-libs
-          restore-keys: ${{matrix.os}}-libs
+          restore-keys: ${{matrix.os}}-${{ matrix.clang-version }}-libs
           
       - name: Cache bins
         id: bins
@@ -40,7 +41,7 @@ jobs:
         with:
           path: ~/usr/bin/
           key: ${{matrix.os}}-${{ matrix.clang-version }}-bins
-          restore-keys: ${{matrix.os}}-bins
+          restore-keys: ${{matrix.os}}-${{ matrix.clang-version }}-bins
           
       - name: Cache build
         id: build
@@ -48,7 +49,7 @@ jobs:
         with:
           path: ${{ github.workspace }}/build/
           key: ${{matrix.os}}-${{ matrix.clang-version }}-build-folder
-          restore-keys: ${{matrix.os}}-build-folder
+          restore-keys: ${{matrix.os}}-${{ matrix.clang-version }}-build-folder
           
       - name: Install Dependencies
         run: |
