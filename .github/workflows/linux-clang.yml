@@ -31,21 +31,24 @@ jobs:
         uses: actions/cache@v2.1.6
         with:
           path: ~/usr/lib/
-          key: ${{matrix.os}}-libs
+          key: ${{matrix.os}}-${{ matrix.clang-version }}-libs
+          restore-keys: ${{matrix.os}}-libs
           
       - name: Cache bins
         id: bins
         uses: actions/cache@v2.1.6
         with:
           path: ~/usr/bin/
-          key: ${{matrix.os}}-bins
+          key: ${{matrix.os}}-${{ matrix.clang-version }}-bins
+          restore-keys: ${{matrix.os}}-bins
           
       - name: Cache build
         id: build
         uses: actions/cache@v2.1.6
         with:
           path: ${{ github.workspace }}/build/
-          key: ${{ matrix.os }}-build-folder
+          key: ${{matrix.os}}-${{ matrix.clang-version }}-build-folder
+          restore-keys: ${{matrix.os}}-build-folder
           
       - name: Install Dependencies
         run: |
