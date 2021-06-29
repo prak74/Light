@@ -25,13 +25,27 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: Cache
+      
+      - name: Cache libs
+        id: libs
         uses: actions/cache@v2.1.6
         with:
-          path: |
-            ~/usr/lib/
-            ~/usr/bin/
-          key: ${{matrix.os}}-caches
+          path: ~/usr/lib/
+          key: ${{matrix.os}}-libs
+          
+      - name: Cache bins
+        id: bins
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/usr/bin/
+          key: ${{matrix.os}}-bins
+          
+      - name: Cache build
+        id: build
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ github.workspace }}/build/
+          key: ${{ matrix.os }}-build-folder
           
       - name: Install Dependencies
         run: |
