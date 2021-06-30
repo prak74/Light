@@ -67,7 +67,7 @@ jobs:
             ${{github.workspace}}/build/*
             ${{github.workspace}}/clcache/*
           # An explicit key for restoring and saving the cache
-          key: windows-mingw-build-${{hashFiles("build/", "clcache/")}}
+          key: windows-mingw-build-${{hashFiles("build/")}}
           # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
           restore-keys: windows-mingw-build-
           
