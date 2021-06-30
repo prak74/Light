@@ -24,13 +24,13 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Cache
+    - name: Cache Build Directory
       uses: actions/cache@v2.1.6
       with:
         # A list of files, directories, and wildcard patterns to cache and restore
-        path: ${{github.workspace}}/build
+        path: ${{github.workspace}}/build/*
         # An explicit key for restoring and saving the cache
-        key: windows-msvc-build-hashFiles("build/")
+        key: windows-msvc-build-${{hashFiles("build/")}}
         # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
         restore-keys: windows-msvc-build-
         
@@ -59,12 +59,24 @@ jobs:
         with:
           install: mingw-w64-x86_64-gcc mingw-w64-x86_64-make
           
+      - name: Cache Build Directory
+        uses: actions/cache@v2.1.6
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: >
+            ${{github.workspace}}/build/*
+            ${{github.workspace}}/clcache/*
+          # An explicit key for restoring and saving the cache
+          key: windows-mingw-build-${{hashFiles("build/", "clcache/")}}
+          # An ordered list of keys to use for restoring the cache if no cache hit occurred for key
+          restore-keys: windows-mingw-build-
+          
       - name: Configure CMake
         run: cmake -HEditor -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -G"MinGW Makefiles"
-      
+          
       - name: Build
         run: |
-          pip install git+https://github.com/frerich/clcache.git
+          pip install clcache
           cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -- -j2
           clcache -s
         env:
